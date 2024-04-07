@@ -16,6 +16,8 @@ program
 function mainProcess(argFirst, argSecond) {
     const startDate = convertToDate(argFirst);
     const endDate = convertToDate(argSecond);
+    if (isLastDateEarlierThanFirstDate(startDate, endDate))
+        endDate.setFullYear(endDate.getFullYear() + 1);
     printAllDates(startDate, endDate);
 }
 // convert a String (MMDD) to a js Date object
@@ -37,5 +39,11 @@ function formatDate(date) {
     const day = date.getDate().toString().padStart(2, '0');
     const dayOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()];
     return `${day} (${dayOfWeek})`;
+}
+function isLastDateEarlierThanFirstDate(startDate, endDate) {
+    if (endDate.getTime() < startDate.getTime())
+        return true;
+    else
+        return false;
 }
 //# sourceMappingURL=index.js.map

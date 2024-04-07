@@ -1,8 +1,9 @@
 # KAL
-Node CLI command
+Node CLI command. 
 
 ## Prerequisities
-NodeJS >= 16
+Your PC needs:
+- NodeJS >= 16
 
 ## Build
 cd to project root directory and do `npm run build`

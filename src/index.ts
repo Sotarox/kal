@@ -18,6 +18,7 @@ program
 function mainProcess(argFirst: string, argSecond: string) {
     const startDate = convertToDate(argFirst);
     const endDate = convertToDate(argSecond);
+    if (isLastDateEarlierThanFirstDate(startDate, endDate)) endDate.setFullYear(endDate.getFullYear() + 1);
     printAllDates(startDate, endDate);
 }
 
@@ -42,4 +43,9 @@ function formatDate(date: Date): string {
     const day = date.getDate().toString().padStart(2, '0');
     const dayOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()];
     return `${day} (${dayOfWeek})`;
+}
+
+function isLastDateEarlierThanFirstDate(startDate: Date, endDate: Date){
+    if (endDate.getTime() < startDate.getTime()) return true;
+    else return false;
 }
