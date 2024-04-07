@@ -8,8 +8,8 @@ const program = new Command();
 program
     .version("1.0.0")
     .description("Prints all dates between specified first & last date.")
-    .argument("<first date>", "The beggining of the date. Format is DDMM")
-    .argument("<last date>", "The end of the date. Format is DDMM")
+    .argument("<first date>", "The beggining of the date. Format is MMDD")
+    .argument("<last date>", "The end of the date. Format is MMDD")
     .action((argFirst: string, argSecond: string) => {
         mainProcess(argFirst, argSecond)
     })

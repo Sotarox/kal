@@ -1,31 +1,22 @@
 #! /usr/bin/env node
 "use strict";
-const { Command } = require("commander"); // add this line
+const { Command } = require("commander");
 const fs = require("fs");
 const path = require("path");
 const program = new Command();
 program
     .version("1.0.0")
-    .description("An example CLI for managing a directory")
-    .argument("<first>", "The beggining of the date. Format is DDMM")
-    .argument("<second>", "The end of the date. Format is DDMM")
-    // .action((argFirst: string, argSecond: string) => {
-    //     console.log("1st:", argFirst);
-    //     console.log("2nd:", argSecond);
-    // })
+    .description("Prints all dates between specified first & last date.")
+    .argument("<first date>", "The beggining of the date. Format is MMDD")
+    .argument("<last date>", "The end of the date. Format is MMDD")
     .action((argFirst, argSecond) => {
-    getCalenderLines(argFirst, argSecond);
+    mainProcess(argFirst, argSecond);
 })
     .parse(process.argv);
-function getCalenderLines(argFirst, argSecond) {
+function mainProcess(argFirst, argSecond) {
     const startDate = convertToDate(argFirst);
     const endDate = convertToDate(argSecond);
     printAllDates(startDate, endDate);
-}
-function formatDate(date) {
-    const day = date.getDate().toString().padStart(2, '0');
-    const dayOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()];
-    return `${day} (${dayOfWeek})`;
 }
 // convert a String (MMDD) to a js Date object
 function convertToDate(dateString) {
@@ -41,5 +32,10 @@ function printAllDates(startDate, endDate) {
         console.log(formatDate(tempDate));
         tempDate.setDate(tempDate.getDate() + 1);
     }
+}
+function formatDate(date) {
+    const day = date.getDate().toString().padStart(2, '0');
+    const dayOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()];
+    return `${day} (${dayOfWeek})`;
 }
 //# sourceMappingURL=index.js.map
