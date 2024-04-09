@@ -1,8 +1,6 @@
 #! /usr/bin/env node
 
-const { Command } = require("commander");
-const fs = require("fs");
-const path = require("path");
+import { Command } from 'commander';
 
 const program = new Command();
 program
@@ -10,28 +8,42 @@ program
     .description("Prints all dates between specified first & last date.")
     .argument("<first date>", "The beggining of the date. Format is MMDD")
     .argument("<last date>", "The end of the date. Format is MMDD")
-    .action((argFirst: string, argSecond: string) => {
-        mainProcess(argFirst, argSecond)
-    })
+    .option('-y, --year <year>', 'specify a year to the beginning of the date')
     .parse(process.argv);
+
+const options = program.opts();
+let YEAR:number;
+if (options.year) YEAR = parseInt(options.year);
+else {
+    const today = new Date();
+    YEAR = today.getFullYear();
+} 
+const args:string[] = program.args;
+if (args.length != 2) {
+    console.error("two arguments must be given; beginning of the date (MMDD) & end of the date (MMDD)")
+    process.exit(1);
+} else {
+    mainProcess(args[0], args[1]);
+}
 
 function mainProcess(argFirst: string, argSecond: string) {
     const startDate = convertToDate(argFirst);
     const endDate = convertToDate(argSecond);
-    if (isLastDateEarlierThanFirstDate(startDate, endDate)) endDate.setFullYear(endDate.getFullYear() + 1);
+    if (isLastDateEarlierThanFirstDate(startDate, endDate)) {
+        endDate.setFullYear(endDate.getFullYear() + 1);
+    }
     printAllDates(startDate, endDate);
 }
 
 // convert a String (MMDD) to a js Date object
 function convertToDate(dateString: string): Date {
-    const today = new Date();
-    const currentYear = today.getFullYear();
     const month = parseInt(dateString.substring(0, 2)) - 1;
     const day = parseInt(dateString.substring(2, 4));
-    return new Date(currentYear, month, day);
+    return new Date(YEAR, month, day);
 }
 
 function printAllDates(startDate: Date, endDate: Date) {
+    console.log("Year", startDate.getFullYear());
     const tempDate = startDate;
     while (tempDate.getTime() <= endDate.getTime()) {
         console.log(formatDate(tempDate));
