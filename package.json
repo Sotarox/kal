@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build && jest",
     "global-install": "npm install -g ."
   },
   "keywords": [],
@@ -18,7 +18,11 @@
     "commander": "^12.0.0"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.12.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "typescript": "^5.4.4"
   }
 }

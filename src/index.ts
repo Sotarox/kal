@@ -57,7 +57,7 @@ function formatDate(date: Date): string {
     return `${day} (${dayOfWeek})`;
 }
 
-function isLastDateEarlierThanFirstDate(startDate: Date, endDate: Date){
+export function isLastDateEarlierThanFirstDate(startDate: Date, endDate: Date){
     if (endDate.getTime() < startDate.getTime()) return true;
     else return false;
 }
