@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import { Command } from 'commander';
+import { exec } from 'child_process';
 
 const program = new Command();
 program
@@ -33,6 +34,7 @@ function mainProcess(argFirst: string, argSecond: string) {
         endDate.setFullYear(endDate.getFullYear() + 1);
     }
     printAllDates(startDate, endDate);
+    showCalendar();
 }
 
 // convert a String (MMDD) to a js Date object
@@ -60,4 +62,20 @@ function formatDate(date: Date): string {
 export function isLastDateEarlierThanFirstDate(startDate: Date, endDate: Date){
     if (endDate.getTime() < startDate.getTime()) return true;
     else return false;
+}
+
+function showCalendar(){
+    // TODO: implement properly display month
+    const cmd = `cal -d ${YEAR}-01`;
+    exec(cmd, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.error(`Std Error: ${stderr}`);
+          return;
+        }
+        console.log(`${stdout}`);
+      });
 }
