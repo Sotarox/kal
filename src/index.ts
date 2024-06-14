@@ -69,26 +69,11 @@ export function isLastDateEarlierThanFirstDate(startDate: Date, endDate: Date){
 
 function showCalendar(startDate: Date, endDate: Date){
     console.log(""); // line feed
-    // cal command interpret 1 = Jan, whereas getMonth returns 0 for Jan. So increment is necessary. 
-    const startMonth = startDate.getMonth() +1;
-    const endMonth = endDate.getMonth() +1;
-    if (startMonth <= endMonth){
-        let tempMonth = startMonth;
-        while (tempMonth <= endMonth){
-            callCal(startDate.getFullYear(), tempMonth);
-            tempMonth++;
-        }
-    } else {
-        let tempMonth = startMonth;
-        while (tempMonth <= 12){
-            callCal(startDate.getFullYear(), tempMonth);
-            tempMonth++;
-        }
-        tempMonth = 1;
-        while (tempMonth <= endMonth){
-            callCal(endDate.getFullYear(), tempMonth);
-            tempMonth++;
-        }
+    let tempDate = new Date(startDate.getTime());
+    while (true) {
+        callCal (tempDate.getFullYear(), tempDate.getMonth() + 1);
+        tempDate = new Date(tempDate.setMonth(tempDate.getMonth() + 1));
+        if (tempDate.getMonth() > endDate.getMonth()) return;
     }
 }
 
