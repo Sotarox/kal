@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import { Command } from 'commander';
-import { exec } from 'child_process';
+import { execSync } from 'child_process';
 
 const program = new Command();
 program
@@ -92,17 +92,14 @@ function showCalendar(startDate: Date, endDate: Date){
     }
 }
 
-function callCal(year: number, month: number){
+function callCal(year: number, month: number) {
     const cmd = `cal -d ${year}-${month}`;
-    exec(cmd, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Error: ${error.message}`);
-          return;
+    try {
+        const response = execSync(cmd);
+        console.log(`${response}`);
+    } catch (error) {
+        if (error instanceof Error){
+            console.log("output", error);
         }
-        if (stderr) {
-          console.error(`Std Error: ${stderr}`);
-          return;
-        }
-        console.log(`${stdout}`);
-      });
+    }
 }
