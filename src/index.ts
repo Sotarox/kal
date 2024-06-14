@@ -30,11 +30,14 @@ if (args.length != 2) {
 function mainProcess(argFirst: string, argSecond: string) {
     const startDate = convertToDate(argFirst);
     const endDate = convertToDate(argSecond);
+    // Normally the same year is set to both start- and endDate. 
+    // This makes problem for the calcuration over the year, e.g. Dec 30 to Jan 08.
+    // In that case, endDate increments year by the following lines. 
     if (isLastDateEarlierThanFirstDate(startDate, endDate)) {
         endDate.setFullYear(endDate.getFullYear() + 1);
     }
     printAllDates(startDate, endDate);
-    showCalendar();
+    showCalendar(startDate, endDate);
 }
 
 // convert a String (MMDD) to a js Date object
@@ -46,7 +49,7 @@ function convertToDate(dateString: string): Date {
 
 function printAllDates(startDate: Date, endDate: Date) {
     console.log("Year", startDate.getFullYear());
-    const tempDate = startDate;
+    const tempDate = new Date(startDate.getTime());
     while (tempDate.getTime() <= endDate.getTime()) {
         console.log(formatDate(tempDate));
         tempDate.setDate(tempDate.getDate() + 1);
@@ -64,9 +67,33 @@ export function isLastDateEarlierThanFirstDate(startDate: Date, endDate: Date){
     else return false;
 }
 
-function showCalendar(){
-    // TODO: implement properly display month
-    const cmd = `cal -d ${YEAR}-01`;
+function showCalendar(startDate: Date, endDate: Date){
+    console.log(""); // line feed
+    // cal command interpret 1 = Jan, whereas getMonth returns 0 for Jan. So increment is necessary. 
+    const startMonth = startDate.getMonth() +1;
+    const endMonth = endDate.getMonth() +1;
+    if (startMonth <= endMonth){
+        let tempMonth = startMonth;
+        while (tempMonth <= endMonth){
+            callCal(startDate.getFullYear(), tempMonth);
+            tempMonth++;
+        }
+    } else {
+        let tempMonth = startMonth;
+        while (tempMonth <= 12){
+            callCal(startDate.getFullYear(), tempMonth);
+            tempMonth++;
+        }
+        tempMonth = 1;
+        while (tempMonth <= endMonth){
+            callCal(endDate.getFullYear(), tempMonth);
+            tempMonth++;
+        }
+    }
+}
+
+function callCal(year: number, month: number){
+    const cmd = `cal -d ${year}-${month}`;
     exec(cmd, (error, stdout, stderr) => {
         if (error) {
           console.error(`Error: ${error.message}`);
